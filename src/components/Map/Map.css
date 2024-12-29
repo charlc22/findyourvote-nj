@@ -1,0 +1,13 @@
+.district-tooltip {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #4a90e2;
+    border-radius: 2px;          /* Made radius even smaller */
+    padding: 1px 4px;           /* Reduced padding further */
+    font-weight: 500;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.leaflet-interactive {
+    outline: none !important;
+}
