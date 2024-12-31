@@ -1,87 +1,96 @@
 import React, { useState } from 'react';
 import Map from './components/Map/Map';
 import DistrictInfo from './components/DistrictInfo';
+import ElectionInfo from './components/ElectionInfo';
+
+const API_BASE_URL = 'http://localhost:3001/api';
 
 function App() {
     const [activeView, setActiveView] = useState('house');
     const [selectedDistrictData, setSelectedDistrictData] = useState(null);
     const [selectedDistrictCandidates, setSelectedDistrictCandidates] = useState([]);
     const [selectedDistrictElection, setSelectedDistrictElection] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    // Placeholder fetch functions (replace with actual API calls later)
     const fetchDistrictData = async (districtNumber) => {
-        // Placeholder data
-        return {
-            district_number: districtNumber,
-            population: 750000,
-            last_updated: '2024-01-01'
-        };
+        try {
+            const response = await fetch(`${API_BASE_URL}/house/districts/${districtNumber}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch district data');
+            }
+            const data = await response.json();
+            // The election data is now included in the district response
+            const { election, ...districtInfo } = data;
+            return { districtInfo, election };
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
     };
 
     const fetchCandidateData = async (districtNumber) => {
-        // Placeholder data
-        return [
-            {
-                candidate_id: 1,
-                name: 'John Doe',
-                party: 'Democratic',
-                incumbent: true
-            },
-            {
-                candidate_id: 2,
-                name: 'Jane Smith',
-                party: 'Republican',
-                incumbent: false
-            }
-        ];
-    };
-
-    const fetchElectionData = async (districtNumber) => {
-        // Placeholder data
-        return {
-            election_date: '2024-11-05',
-            registration_deadline: '2024-10-15',
-            early_voting_start: '2024-10-20',
-            early_voting_end: '2024-11-04'
-        };
-    };
-
-    // Function to fetch district data when a district is selected
-    const handleDistrictSelect = async (districtNumber) => {
         try {
-            const districtData = await fetchDistrictData(districtNumber);
-            const candidateData = await fetchCandidateData(districtNumber);
-            const electionData = await fetchElectionData(districtNumber);
-
-            setSelectedDistrictData(districtData);
-            setSelectedDistrictCandidates(candidateData);
-            setSelectedDistrictElection(electionData);
+            const response = await fetch(`${API_BASE_URL}/house/candidates/${districtNumber}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch candidate data');
+            }
+            return await response.json();
         } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    };
+
+    const handleDistrictSelect = async (districtNumber) => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            // Fetch both district and candidate data
+            const { districtInfo, election } = await fetchDistrictData(districtNumber);
+            const candidateData = await fetchCandidateData(districtNumber);
+
+            setSelectedDistrictData(districtInfo);
+            setSelectedDistrictCandidates(candidateData);
+            setSelectedDistrictElection(election);
+        } catch (error) {
+            setError('Failed to fetch district information. Please try again later.');
             console.error('Error fetching district data:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen bg-gray-100">
-            {/* Your existing nav code */}
             <nav className="bg-blue-600 p-4 shadow-lg">
-                {/* ... */}
+                {/* Your existing nav code */}
             </nav>
 
-            {/* Main Content */}
             <div className="flex p-4">
-                {/* Left side content */}
+                {/* Left panel - District and Candidate Info */}
                 <div className="w-1/2 p-4 bg-white rounded-lg shadow">
-                    <DistrictInfo
-                        selectedDistrict={selectedDistrictData?.district_number}
-                        districtData={selectedDistrictData}
-                        candidateData={selectedDistrictCandidates}
-                        electionData={selectedDistrictElection}
-                    />
+                    {error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                            {error}
+                        </div>
+                    )}
+                    {loading ? (
+                        <div className="flex justify-center items-center h-64">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                        </div>
+                    ) : (
+                        <DistrictInfo
+                            selectedDistrict={selectedDistrictData?.District_Number}
+                            districtData={selectedDistrictData}
+                            candidateData={selectedDistrictCandidates}
+                        />
+                    )}
                 </div>
 
-                {/* Right side - Toggle buttons and map */}
-                <div className="w-1/2 p-4">
+                {/* Right panel - Map and Election Info */}
+                <div className="w-1/2 p-4 flex flex-col">
                     {/* Toggle buttons */}
                     <div className="flex space-x-4 mb-4">
                         <button
@@ -103,10 +112,19 @@ function App() {
                             Senate Race
                         </button>
                     </div>
-                    <Map
-                        activeView={activeView}
-                        onDistrictSelect={handleDistrictSelect}
-                    />
+
+                    {/* Map */}
+                    <div className="flex-grow mb-0">
+                        <Map
+                            activeView={activeView}
+                            onDistrictSelect={handleDistrictSelect}
+                        />
+                    </div>
+
+                    {/* Election Info Panel */}
+                    <div className="-mt-24">
+                        <ElectionInfo electionData={selectedDistrictElection} />
+                    </div>
                 </div>
             </div>
         </div>
