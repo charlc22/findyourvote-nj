@@ -1,12 +1,12 @@
 ## Find Your Vote NJ
 An interactive web application that helps New Jersey residents find information about their congressional districts, representatives, and upcoming elections.
-Features
+Features:
 
-Interactive map of New Jersey congressional districts
-District-specific information display
-Toggle between House districts and Senate race views
-Real-time district selection and information updates
-Candidate information display
+Interactive map of New Jersey congressional districts,
+District-specific information display,
+Toggle between House districts and Senate race views,
+Real-time district selection and information updates,
+Candidate information display,
 Election dates and deadlines
 
 Technologies Used:
@@ -14,7 +14,8 @@ Technologies Used:
 React.js,
 React-Leaflet for mapping,
 Tailwind CSS for styling,
-GeoJSON for district boundaries
+GeoJSON for district boundaries,
+Azure SQL and MSSQL for data
 
 ## Getting Started
 
