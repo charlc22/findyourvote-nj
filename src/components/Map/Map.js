@@ -57,7 +57,7 @@ function Map({ activeView, onDistrictSelect }) {
             <MapContainer
                 center={[40.1, -74.6]}
                 zoom={8}
-                style={{ height: '630px', width: '100%', borderRadius: '8px' }}
+                style={{ height: '650px', width: '100%', borderRadius: '8px' }}
                 maxBounds={[[38.8, -75.6], [41.4, -73.9]]}
                 minZoom={7}
                 maxZoom={12}
