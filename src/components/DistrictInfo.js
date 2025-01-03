@@ -105,7 +105,7 @@ function DistrictInfo({ selectedDistrict, districtData, candidateData }) {
                                             {candidate.Contact_Info && (
                                                 <div>
                                                     <span className="font-medium">Contact: </span>
-                                                    {candidate.Contact_Info}
+                                                    <span className="whitespace-pre-line">{candidate.Contact_Info}</span>
                                                 </div>
                                             )}
                                         </div>

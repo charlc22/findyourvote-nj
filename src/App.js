@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Map from './components/Map/Map';
 import DistrictInfo from './components/DistrictInfo';
 import ElectionInfo from './components/ElectionInfo';
+import Navbar from './components/Navbar';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -64,9 +65,7 @@ function App() {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="bg-blue-600 p-4 shadow-lg">
-                {/* Your existing nav code */}
-            </nav>
+            <Navbar onDistrictSelect={handleDistrictSelect} />
 
             <div className="flex p-4">
                 {/* Left panel - District and Candidate Info */}

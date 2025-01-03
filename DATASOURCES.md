@@ -22,22 +22,19 @@ This document provides detailed information about the data sources used in the F
 
 ## Electoral Data
 
+
 ### District Information
 Currently using placeholder data for:
 - District population
 - Last update dates
 
 ### Candidate Information
-Currently using placeholder data for:
-- Candidate names
-- Party affiliations
-- Incumbent status
+- Offical Campaign Websites 
+- Congress persons official website
+- https://ballotpedia.org/
 
 ### Election Information
-Currently using placeholder data for:
-- Election dates
-- Registration deadlines
-- Early voting periods
+https://www.nj.gov/state/elections/
 
 ## Future Data Integration
 Planning to integrate:
@@ -45,6 +42,9 @@ Planning to integrate:
 - Historical election data
 - Demographic information
 - Voting location data
+
+## Zip Code Algorithm
+https://data.nj.gov/Reference-Data/Congressional-Districts-and-Zip-Codes/enjb-xzdc/about_data
 
 ## Data Update Schedule
 - Geographic data: Updated following redistricting
